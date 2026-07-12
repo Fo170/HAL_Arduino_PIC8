@@ -1,6 +1,6 @@
 # HAL_Arduino_PIC8
 
-[![License](https://img.shields.io/badge/license-LGPL--2.1-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-PIC16F%2FPIC18F-orange)]()
 [![XC8](https://img.shields.io/badge/XC8-2.x%20%7C%203.x-green)]()
 
@@ -374,4 +374,4 @@ pio run -e pic16f887
 
 ## Licence
 
-LGPL-2.1
+GPL-3.0
