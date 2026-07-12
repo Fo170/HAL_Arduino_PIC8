@@ -1,6 +1,14 @@
 # HAL_Arduino_PIC8
 
-Arduino Uno-compatible HAL for 8-bit PIC microcontrollers (PIC16F & PIC18F).
+[![License](https://img.shields.io/badge/license-LGPL--2.1-blue.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-PIC16F%2FPIC18F-orange)]()
+[![XC8](https://img.shields.io/badge/XC8-2.x%20%7C%203.x-green)]()
+
+**Arduino Uno-compatible HAL** for 8-bit PIC microcontrollers (PIC16F & PIC18F).
+Un programme écrit pour Arduino Uno compile sans modification sur un PIC.
+
+- GitHub : [Fo170/HAL_Arduino_PIC8](https://github.com/Fo170/HAL_Arduino_PIC8)
+- Version : **1.0.0**
 
 ```c
 #include <Arduino.h>
@@ -293,9 +301,9 @@ HAL_Arduino/
 platform = pic8bit
 board = pic16f887
 framework = pic-xc8
-build_flags = -Ilib/HAL_Arduino/include
+build_flags = -Ilib/HAL_Arduino_PIC8/include
 lib_deps =
-    lib/HAL_Arduino
+    https://github.com/Fo170/HAL_Arduino_PIC8.git
 ```
 
 ### 2. Créer `include/config.h`

@@ -1,5 +1,5 @@
 {
-  "name": "HAL_Arduino",
+  "name": "HAL_Arduino_PIC8",
   "version": "1.0.0",
   "description": "Arduino Uno-compatible HAL for 8-bit PIC microcontrollers (PIC16F, PIC18F). Transparent API: Serial.begin(), Wire.begin(), SPI.transfer(), analogWrite(), millis(), attachInterrupt(), tone(), etc.",
   "keywords": [
@@ -9,5 +9,9 @@
   ],
   "frameworks": ["pic-xc8"],
   "platforms": ["pic8bit"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Fo170/HAL_Arduino_PIC8.git"
+  },
   "license": "LGPL-2.1"
 }
