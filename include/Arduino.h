@@ -5,6 +5,13 @@
 #include <stdint.h>
 #include <stddef.h>
 
+/* Suppress benign warnings for static inline functions not called
+ * by a specific example and indirect call patterns in ISR. */
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
+#endif
+
 #include "Arduino_types.h"
 #include "hal/hal_mcu.h"
 #include "hal/hal_pins.h"
@@ -23,6 +30,10 @@
 
 void setup(void);
 void loop(void);
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 #include "hal/hal_main.h"
 
