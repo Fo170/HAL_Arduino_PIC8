@@ -6,16 +6,16 @@
 
 void setup(void) {
     Serial.begin(9600);
-    Serial.println("Serial echo ready!");
+    Serial_println("Serial echo ready!");
 }
 
 void loop(void) {
     if (Serial.available()) {
         int c = Serial.read();
         if (c >= 0) {
-            Serial.write((uint8_t)c);
+            Serial_write((uint8_t)c);
             if (c == '\r')
-                Serial.write('\n');
+                Serial_write('\n');
         }
     }
 }
