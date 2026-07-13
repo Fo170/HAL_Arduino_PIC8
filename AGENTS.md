@@ -13,7 +13,9 @@ HAL_Arduino/
 │       ├── hal_core.h         # ISR unique + globaux + attachInterrupt
 │       ├── hal_main.h         # main() + init() (implémentation unique)
 │       ├── hal_*.h            # Modules header-only (static inline)
-└── config/                    # #pragma config headers
+├── config/                    # #pragma config headers
+├── examples-platformio/       # Exemples prêts à compiler (8 dossiers)
+└── instruction utilisation de pic8bit non-officielle pour PlatformIO.md
 ```
 
 **Header-only** : pas de fichiers `.c`. Tout le code est dans les `.h` en `static inline`.

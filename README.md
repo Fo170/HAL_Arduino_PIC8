@@ -11,6 +11,8 @@ Un programme écrit pour Arduino Uno compile sans modification sur un PIC.
 - Version : **1.0.2**
 
 ```c
+#define HAL_CORE_IMPLEMENTATION
+#define HAL_MAIN_IMPLEMENTATION
 #include <Arduino.h>
 
 void setup() {
@@ -26,7 +28,7 @@ void loop() {
 }
 ```
 
-Même code compile sur **Arduino Uno** et **PIC16F887** sans modification.
+Même code compile sur **Arduino Uno** et **PIC16F887** sans modification (avec les deux macros `#define` ajoutées dans le fichier principal).
 
 ## MCUs supportés
 
@@ -103,9 +105,9 @@ int  Serial.peek(void);         // -1 si vide
 uint8_t Serial.available(void);
 void Serial.flush(void);
 size_t Serial.write(buf, len);
-Serial_print(str);              // alias: Serial.print implémenté via struct
-Serial_println(str);
-Serial_printNumber(n, base);    // base = DEC, HEX
+void  Serial_print(const char *str);         // pas de méthode .print() dans la struct
+void  Serial_println(const char *str);       // utiliser Serial_print() / Serial_println()
+void  Serial_printNumber(unsigned long n, uint8_t base); // base = DEC, HEX
 ```
 
 - **Buffer RX** : 16 octets circulaire (taille configurable via `SERIAL_RX_BUFFER_SIZE`)
@@ -280,6 +282,17 @@ HAL_Arduino/
     ├── pic18f4553.h
     ├── pic18f46k20.h
     └── pic18f4685.h
+
+examples-platformio/                 # Exemples PlatformIO prêts à l'emploi
+├── blink-pic16f877/
+├── blink-pic18f4550/
+├── serial-echo/
+├── pwm-test/
+├── analog-read/
+├── interrupt-button/
+├── tone-melody/
+├── pic16f18f/
+└── test-18f4550/
 ```
 
 ## Librairie header-only
@@ -344,7 +357,7 @@ void loop(void) {
     delay(500);
     digitalWrite(LED_BUILTIN, LOW);
     delay(500);
-    Serial.println("Hello from PIC!");
+    Serial_println("Hello from PIC!");
 }
 ```
 
@@ -354,6 +367,26 @@ Les autres fichiers `.c` du projet n'ont besoin que de `#include <Arduino.h>` (s
 
 ```bash
 pio run -e pic16f887
+```
+
+## Exemples PlatformIO
+
+Dossier `examples-platformio/` — 8 exemples prêts à compiler :
+
+| Exemple | API | MCU |
+|---------|-----|-----|
+| `blink-pic16f877` | GPIO, delay | 16F877 |
+| `blink-pic18f4550` | GPIO, delay (PLL 48 MHz) | 18F4550 |
+| `serial-echo` | Serial, UART ISR, buffer RX | 16F877 + 18F4550 |
+| `pwm-test` | PWM (CCP), Timer2, fréquence | 16F877 + 18F4550 |
+| `analog-read` | ADC, analogRead, Serial print | 16F877 + 18F4550 |
+| `interrupt-button` | attachInterrupt, callback INT0 | 16F877 + 18F4550 |
+| `tone-melody` | tone, noTone, Timer2 | 16F877 + 18F4550 |
+| `pic16f18f` / `test-18f4550` | Bare metal (XC8 direct) | 16F877 / 18F4550 |
+
+```bash
+cd examples-platformio/blink-pic18f4550
+pio run -e pic18f4550
 ```
 
 ## Gestion des timers
