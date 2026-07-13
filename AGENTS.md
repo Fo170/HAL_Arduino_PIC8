@@ -79,6 +79,17 @@ pio run -e pic18f4550
 xc8 -mcpu=16F887 --chip=16F887 main.c
 ```
 
+### Plateforme pic8bit — Particularité
+
+Le builder `pic-xc8.py` de la plateforme pic8bit **ne supporte pas** `lib_deps` automatiquement. Pour utiliser cette bibliothèque dans un projet :
+
+1. Déclarer `HAL_Arduino_PIC8` dans `lib_deps` du `platformio.ini`
+2. Exécuter `pio run` une première fois pour télécharger la bibliothèque
+3. Créer un lien symbolique : `ln -s ../.pio/libdeps/<env>/HAL_Arduino_PIC8 lib/`
+4. Ajouter `-Ilib/HAL_Arduino_PIC8/include` dans `build_flags`
+
+Voir le fichier [`instruction utilisation de pic8bit non-officielle pour PlatformIO.md`](../instruction%20utilisation%20de%20pic8bit%20non-officielle%20pour%20PlatformIO.md) pour les détails (inclut aussi l'installation de XC8 sous Linux et Windows).
+
 ## Tests
 
 Pas de framework de test automatisé. Vérifier :

@@ -8,7 +8,7 @@
 Un programme écrit pour Arduino Uno compile sans modification sur un PIC.
 
 - GitHub : [Fo170/HAL_Arduino_PIC8](https://github.com/Fo170/HAL_Arduino_PIC8)
-- Version : **1.0.0**
+- Version : **1.0.1**
 
 ```c
 #include <Arduino.h>
@@ -292,6 +292,15 @@ HAL_Arduino/
     └── pic18f4685.h
 ```
 
+## Plateforme pic8bit — Problème connu
+
+La plateforme non-officielle **pic8bit** pour PlatformIO utilise un builder (`pic-xc8.py`) qui **ne gère pas** automatiquement `lib_deps`. En particulier :
+
+1. Les chemins `-I` des librairies installées ne sont pas ajoutés
+2. Les fichiers source des librairies ne sont pas compilés automatiquement
+
+Voir le fichier [`instruction utilisation de pic8bit non-officielle pour PlatformIO.md`](./instruction%20utilisation%20de%20pic8bit%20non-officielle%20pour%20PlatformIO.md) pour les détails (inclut aussi l'installation de XC8 sous Linux et Windows).
+
 ## Guide de démarrage rapide
 
 ### 1. Créer `platformio.ini`
@@ -301,7 +310,9 @@ HAL_Arduino/
 platform = pic8bit
 board = pic16f887
 framework = pic-xc8
-build_flags = -Ilib/HAL_Arduino_PIC8/include
+build_flags =
+    -Iinclude
+    -Ilib/HAL_Arduino_PIC8/include
 lib_deps =
     https://github.com/Fo170/HAL_Arduino_PIC8.git
 ```
@@ -345,7 +356,14 @@ void loop(void) {
 }
 ```
 
-### 4. Compiler
+### 4. Créer le lien symbolique
+
+```bash
+mkdir -p lib
+ln -s ../.pio/libdeps/pic16f887/HAL_Arduino_PIC8 lib/HAL_Arduino_PIC8
+```
+
+### 5. Compiler
 
 ```bash
 pio run -e pic16f887
