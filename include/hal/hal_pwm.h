@@ -42,12 +42,12 @@ static inline void pwm_ccp_set_duty(uint8_t ccp, uint8_t duty) {
     switch (ccp) {
         case 1:
             CCPR1L = (uint8_t)(duty_10 >> 2);
-            CCP1CON = (CCP1CON & 0xCF) | ((uint8_t)(duty_10 & 0x03) << 4);
+            CCP1CON = (uint8_t)((CCP1CON & 0xCF) | ((uint8_t)(duty_10 & 0x03) << 4));
             break;
 #if defined(CCP2CON) && defined(CCPR2L)
         case 2:
             CCPR2L = (uint8_t)(duty_10 >> 2);
-            CCP2CON = (CCP2CON & 0xCF) | ((uint8_t)(duty_10 & 0x03) << 4);
+            CCP2CON = (uint8_t)((CCP2CON & 0xCF) | ((uint8_t)(duty_10 & 0x03) << 4));
             break;
 #endif
     }
@@ -55,22 +55,23 @@ static inline void pwm_ccp_set_duty(uint8_t ccp, uint8_t duty) {
 
 static inline void pwm_timer2_freq(unsigned long freq_hz) {
     unsigned long period_cycles;
-    uint8_t t2ckps, pr2;
+    uint8_t t2ckps;
+    uint16_t pr2;
     if (freq_hz == 0) freq_hz = 5000;
     period_cycles = _XTAL_FREQ / (4ul * freq_hz);
     if (period_cycles <= 256) {
         t2ckps = 0;
-        pr2 = (uint8_t)(period_cycles - 1);
+        pr2 = (uint16_t)(period_cycles - 1);
     } else if (period_cycles <= 1024) {
         t2ckps = 1;
-        pr2 = (uint8_t)((period_cycles / 4) - 1);
+        pr2 = (uint16_t)((period_cycles / 4) - 1);
     } else {
         t2ckps = 3;
-        pr2 = (uint8_t)((period_cycles / 16) - 1);
+        pr2 = (uint16_t)((period_cycles / 16) - 1);
         if (pr2 > 255) pr2 = 255;
     }
-    hal_current_pr2 = pr2;
-    PR2 = pr2;
+    hal_current_pr2 = (uint8_t)pr2;
+    PR2 = (uint8_t)pr2;
     T2CON = (T2CON & 0xFC) | t2ckps;
     T2CON |= 0x04;
 }

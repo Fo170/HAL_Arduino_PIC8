@@ -87,4 +87,66 @@
     #define NUM_ANALOG_PINS  0
 #endif
 
+/* Arduino-compatible analog pin aliases */
+#if defined(PIN_A0)
+#define A0 PIN_A0
+#endif
+#if defined(PIN_A1)
+#define A1 PIN_A1
+#endif
+#if defined(PIN_A2)
+#define A2 PIN_A2
+#endif
+#if defined(PIN_A3)
+#define A3 PIN_A3
+#endif
+#if defined(PIN_A4)
+#define A4 PIN_A4
+#endif
+#if defined(PIN_A5)
+#define A5 PIN_A5
+#endif
+#if defined(PIN_A6)
+#define A6 PIN_A6
+#endif
+#if defined(PIN_A7)
+#define A7 PIN_A7
+#endif
+#if defined(PIN_A8)
+#define A8 PIN_A8
+#endif
+#if defined(PIN_A9)
+#define A9 PIN_A9
+#endif
+#if defined(PIN_A10)
+#define A10 PIN_A10
+#endif
+#if defined(PIN_A11)
+#define A11 PIN_A11
+#endif
+#if defined(PIN_A12)
+#define A12 PIN_A12
+#endif
+#if defined(PIN_A16)
+#define A16 PIN_A16
+#endif
+#if defined(PIN_A17)
+#define A17 PIN_A17
+#endif
+#if defined(PIN_A18)
+#define A18 PIN_A18
+#endif
+#if defined(PIN_A19)
+#define A19 PIN_A19
+#endif
+#if defined(PIN_A24)
+#define A24 PIN_A24
+#endif
+#if defined(PIN_A25)
+#define A25 PIN_A25
+#endif
+#if defined(PIN_A26)
+#define A26 PIN_A26
+#endif
+
 #endif

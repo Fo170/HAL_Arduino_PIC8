@@ -53,7 +53,7 @@ static inline uint8_t Wire_endTransmission(uint8_t stop) {
     SSPCON2bits.SEN = 1;
     while (SSPCON2bits.SEN);
     SSPBUF = (uint8_t)(hal_i2c_addr << 1);
-    while (SSPSTATbits.BF || SSPSTATbits.R_NOT_W);
+    while (SSPSTATbits.BF || (SSPSTAT & 0x04));
     if (SSPCON2bits.ACKSTAT) return 2;
     while (SSPCON2bits.SEN);
     if (stop) {
@@ -70,7 +70,7 @@ static inline size_t Wire_write(const uint8_t *data, size_t len) {
     uint8_t ack = 1;
     for (size_t i = 0; i < len && ack; i++) {
         SSPBUF = data[i];
-        while (SSPSTATbits.BF || SSPSTATbits.R_NOT_W);
+        while (SSPSTATbits.BF || (SSPSTAT & 0x04));
         ack = (uint8_t)(!SSPCON2bits.ACKSTAT);
     }
     if (!ack) return len;
@@ -86,7 +86,7 @@ static inline uint8_t Wire_requestFrom(uint8_t addr, uint8_t len) {
     SSPCON2bits.SEN = 1;
     while (SSPCON2bits.SEN);
     SSPBUF = (uint8_t)((addr << 1) | 1);
-    while (SSPSTATbits.BF || SSPSTATbits.R_NOT_W);
+    while (SSPSTATbits.BF || (SSPSTAT & 0x04));
     if (SSPCON2bits.ACKSTAT) return 0;
     for (uint8_t i = 0; i < len; i++) {
         if (i == len - 1)

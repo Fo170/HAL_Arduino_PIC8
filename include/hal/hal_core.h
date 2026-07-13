@@ -33,6 +33,17 @@ extern uint8_t hal_current_pr2;
 static inline void attachInterrupt(uint8_t pin, voidFuncPtr isr, uint8_t mode) {
     GIE = 0;
     if (pin == 8) {
+#if defined(HAL_FAMILY_PIC16)
+        INTF = 0;
+        switch (mode) {
+            case LOW:    INTEDG = 0; break;
+            case CHANGE: INTEDG = 0; break;
+            case RISING: INTEDG = 1; break;
+            case FALLING:INTEDG = 0; break;
+        }
+        hal_int0_callback = isr;
+        INTE = 1;
+#else
         INT0IF = 0;
         switch (mode) {
             case LOW:    INTEDG0 = 0; break;
@@ -42,6 +53,7 @@ static inline void attachInterrupt(uint8_t pin, voidFuncPtr isr, uint8_t mode) {
         }
         hal_int0_callback = isr;
         INT0IE = 1;
+#endif
     }
 #if defined(INT1IE)
     else if (pin == 9) {
@@ -69,7 +81,14 @@ static inline void attachInterrupt(uint8_t pin, voidFuncPtr isr, uint8_t mode) {
 }
 
 static inline void detachInterrupt(uint8_t pin) {
-    if (pin == 8) { INT0IE = 0; hal_int0_callback = 0; }
+    if (pin == 8) {
+#if defined(HAL_FAMILY_PIC16)
+        INTE = 0;
+#else
+        INT0IE = 0;
+#endif
+        hal_int0_callback = 0;
+    }
 #if defined(INT1IE)
     else if (pin == 9) { INT1IE = 0; hal_int1_callback = 0; }
 #endif
@@ -228,8 +247,8 @@ void __interrupt() hal_isr(void) {
             hal_rx_head = next;
         }
     }
-    if (INT0IF) {
-        INT0IF = 0;
+    if (INTF) {
+        INTF = 0;
         if (hal_int0_callback) hal_int0_callback();
     }
     if (RBIF) {

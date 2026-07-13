@@ -97,7 +97,7 @@ static inline void SPI_setClockDivider(uint8_t div) {
         case SPI_CLOCK_DIV32: val = 6; break;
         default:              val = 0; break;
     }
-    SSPCON1 = (SSPCON1 & 0xF1) | (val << 1);
+    SSPCON1 = (uint8_t)((SSPCON1 & 0xF1) | (val << 1));
 #endif
 }
 

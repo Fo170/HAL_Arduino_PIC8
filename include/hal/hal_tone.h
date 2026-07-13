@@ -18,19 +18,20 @@ static inline void toneDuration(uint8_t pin, unsigned int frequency, unsigned lo
 
 static inline void hal_tone_timer2_freq(unsigned int freq) {
     unsigned long period_cycles = _XTAL_FREQ / (4ul * freq);
-    uint8_t t2ckps, pr2;
+    uint8_t t2ckps;
+    uint16_t pr2;
     if (period_cycles <= 256) {
         t2ckps = 0;
-        pr2 = (uint8_t)(period_cycles - 1);
+        pr2 = (uint16_t)(period_cycles - 1);
     } else if (period_cycles <= 1024) {
         t2ckps = 1;
-        pr2 = (uint8_t)((period_cycles / 4) - 1);
+        pr2 = (uint16_t)((period_cycles / 4) - 1);
     } else {
         t2ckps = 3;
-        pr2 = (uint8_t)((period_cycles / 16) - 1);
+        pr2 = (uint16_t)((period_cycles / 16) - 1);
         if (pr2 > 255) pr2 = 255;
     }
-    PR2 = pr2;
+    PR2 = (uint8_t)pr2;
     T2CON = (T2CON & 0xFC) | t2ckps;
     T2CON |= 0x04;
 }
