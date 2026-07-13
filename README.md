@@ -8,7 +8,7 @@
 Un programme écrit pour Arduino Uno compile sans modification sur un PIC.
 
 - GitHub : [Fo170/HAL_Arduino_PIC8](https://github.com/Fo170/HAL_Arduino_PIC8)
-- Version : **1.0.2**
+- Version : **1.0.3**
 
 ```c
 #define HAL_CORE_IMPLEMENTATION
@@ -319,7 +319,7 @@ build_flags =
     -Iinclude
     -I.pio/libdeps/pic16f887/HAL_Arduino_PIC8/include
 lib_deps =
-    https://github.com/Fo170/HAL_Arduino_PIC8.git@^1.0.2
+    https://github.com/Fo170/HAL_Arduino_PIC8.git@^1.0.3
 ```
 
 ### 2. Créer `include/config.h`

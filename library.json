@@ -1,6 +1,6 @@
 {
   "name": "HAL_Arduino_PIC8",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Arduino Uno-compatible HAL for 8-bit PIC microcontrollers (PIC16F, PIC18F). Transparent API: Serial.begin(), Wire.begin(), SPI.transfer(), analogWrite(), millis(), attachInterrupt(), tone(), etc.",
   "keywords": [
     "pic", "microchip", "arduino", "hal", "xc8",
