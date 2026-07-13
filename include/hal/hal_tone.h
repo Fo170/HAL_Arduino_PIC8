@@ -13,6 +13,9 @@ extern volatile uint16_t hal_tone_half_period;
 extern volatile uint16_t hal_tone_count;
 extern volatile uint16_t hal_tone_duration_count;
 
+static inline void noTone(uint8_t pin);
+static inline void toneDuration(uint8_t pin, unsigned int frequency, unsigned long duration);
+
 static inline void hal_tone_timer2_freq(unsigned int freq) {
     unsigned long period_cycles = _XTAL_FREQ / (4ul * freq);
     uint8_t t2ckps, pr2;
