@@ -11,4 +11,6 @@
 #pragma config MCLRE = ON
 #pragma config XINST = OFF
 
+#define _XTAL_FREQ 48000000
+
 #endif /* PROJECT_CONFIG_H */

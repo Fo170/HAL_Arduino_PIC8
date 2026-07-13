@@ -37,6 +37,7 @@
   #pragma config EBTR1 = OFF
   #pragma config EBTR2 = OFF
   #pragma config EBTR3 = OFF
+  #define _XTAL_FREQ 48000000
 #endif
 
 #endif
