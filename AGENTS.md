@@ -26,6 +26,10 @@ Les définitions d'implémentation unique (ISR, variables globales, main) sont a
 #define HAL_MAIN_IMPLEMENTATION   // dans 1 seul .c
 ```
 
+> **Raison** : la plateforme pic8bit ne compile que les `.c` de `lib/*/src/` et ignore
+> `.pio/libdeps/`. En supprimant tous les `.c`, plus besoin de lien symbolique
+> pour que la librairie soit utilisable — un simple `-I` dans `build_flags` suffit.
+
 ## Conventions de code
 
 - **Langage** : C99 (XC8 ne supporte pas C++ sur PIC16F)

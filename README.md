@@ -299,6 +299,10 @@ examples-platformio/                 # Exemples PlatformIO prêts à l'emploi
 
 Cette bibliothèque est **header-only** (aucun fichier `.c`). Il suffit d'ajouter le chemin d'inclusion `-I` dans `build_flags` — pas de lien symbolique, pas de manipulation `lib/`.
 
+> **Pourquoi header-only ?**  
+> La plateforme non-officielle **pic8bit** pour PlatformIO utilise un builder (`pic-xc8.py`) qui ne compile que les fichiers `.c` présents dans `lib/*/src/` du projet et ignore complètement `.pio/libdeps/`. Une librairie avec des `.c` obligeait à créer un lien symbolique dans `lib/` pour que les sources soient compilées — solution fragile et contre-intuitive.  
+> En convertissant tout le code en `static inline` dans les `.h`, il n'y a plus rien à compiler : le seul `-I` dans `build_flags` suffit, et la librairie fonctionne sur n'importe quelle plateforme sans configuration spéciale.
+
 > **Note plateforme pic8bit** : le builder `pic-xc8.py` ne gère pas `lib_deps` automatiquement.  
 > Voir le fichier [`instruction utilisation de pic8bit non-officielle pour PlatformIO.md`](./instruction%20utilisation%20de%20pic8bit%20non-officielle%20pour%20PlatformIO.md) pour les détails (inclut l'installation de XC8).
 
