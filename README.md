@@ -8,7 +8,7 @@
 Un programme écrit pour Arduino Uno compile sans modification sur un PIC.
 
 - GitHub : [Fo170/HAL_Arduino_PIC8](https://github.com/Fo170/HAL_Arduino_PIC8)
-- Version : **1.1.0**
+- Version : **1.0.2**
 
 ```c
 #include <Arduino.h>
