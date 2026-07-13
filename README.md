@@ -414,6 +414,17 @@ pio run -e pic18f4550
 | XC8 built-ins | `__delay_ms()`, `__delay_us()`, `ei()`, `di()` | direct SFR |
 | ISR unique | Toutes les sources | flag polling |
 
+## Changelog
+
+### v1.0.4 — Corrections PIC16F + warnings zéro
+
+- **PIC16F : correction des noms de registres** — `INT0IF` → `INTF`, `INTEDG0` → `INTEDG`, `INT0IE` → `INTE` dans `attachInterrupt()` et l'ISR
+- **I2C : portabilité PIC16F** — remplacement de `SSPSTATbits.R_NOT_W` par `(SSPSTAT & 0x04)` (bit R/W brut)
+- **`A0`..`A26` définis** — alias Arduino `#define A0 PIN_A0` etc. dans `hal_pins.h`
+- **Warnings supprimés** : `-Wno-2053` (fonctions non appelées), `-Wno-759`/`-Wno-2098` (appels indirects dans l'ISR)
+- **Warnings code corrigés** : casts implicites `int→unsigned char` dans `hal_pwm.h`/`hal_spi.h`, comparaison `uint8_t > 255` dans `hal_pwm.h`/`hal_tone.h`
+- **Exemples propres** — 7 exemples × 2 MCU = 14 compilations, zéro erreur, zéro warning
+
 ## Licence
 
 GPL-3.0
