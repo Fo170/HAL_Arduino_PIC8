@@ -319,7 +319,7 @@ build_flags =
     -Iinclude
     -I.pio/libdeps/pic16f887/HAL_Arduino_PIC8/include
 lib_deps =
-    https://github.com/Fo170/HAL_Arduino_PIC8.git
+    https://github.com/Fo170/HAL_Arduino_PIC8.git@^1.0.2
 ```
 
 ### 2. Créer `include/config.h`
