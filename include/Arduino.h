@@ -13,7 +13,7 @@
 #include "hal/hal_serial.h"
 #include "hal/hal_analog.h"
 #include "hal/hal_pwm.h"
-#include "hal/hal_interrupt.h"
+#include "hal/hal_core.h"
 #include "hal/hal_tone.h"
 #include "hal/hal_shift.h"
 #include "hal/hal_math.h"
@@ -21,7 +21,8 @@
 #include "hal/hal_spi.h"
 #include "hal/hal_i2c.h"
 
-void init(void);
+#include "hal/hal_main.h"
+
 void setup(void);
 void loop(void);
 

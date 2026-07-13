@@ -8,7 +8,7 @@
 Un programme écrit pour Arduino Uno compile sans modification sur un PIC.
 
 - GitHub : [Fo170/HAL_Arduino_PIC8](https://github.com/Fo170/HAL_Arduino_PIC8)
-- Version : **1.0.1**
+- Version : **1.1.0**
 
 ```c
 #include <Arduino.h>
@@ -257,28 +257,18 @@ HAL_Arduino/
 │       ├── hal_mcu.h               # Auto-détection du MCU
 │       ├── hal_pins.h              # Pin mapping par MCU
 │       ├── hal_gpio.h              # GPIO inline
-│       ├── hal_time.h              # Temps inline + millis/micros
-│       ├── hal_serial.h            # Struct Serial
-│       ├── hal_analog.h            # ADC API
-│       ├── hal_pwm.h               # PWM API
-│       ├── hal_interrupt.h         # Interrupt API
-│       ├── hal_tone.h              # Tone API
+│       ├── hal_time.h              # Temps + millis/micros (static inline)
+│       ├── hal_serial.h            # Serial + UART (static inline)
+│       ├── hal_analog.h            # ADC (static inline)
+│       ├── hal_pwm.h               # PWM (static inline)
+│       ├── hal_core.h              # ISR unique + globaux + attachInterrupt
+│       ├── hal_main.h              # main() → setup() + loop()
+│       ├── hal_tone.h              # Tone (static inline)
 │       ├── hal_shift.h             # Shift inline
 │       ├── hal_math.h              # Map inline
-│       ├── hal_random.h            # Random API
-│       ├── hal_spi.h               # Struct SPI
-│       └── hal_i2c.h               # Struct Wire
-├── src/
-│   ├── hal_core.c                  # ISR unique + shared state
-│   ├── hal_main.c                  # main() → setup() + loop()
-│   ├── hal_time.c                  # millis/micros (Timer1)
-│   ├── hal_serial.c                # UART + ring buffer RX
-│   ├── hal_analog.c                # ADC
-│   ├── hal_pwm.c                   # PWM (CCP + Timer2)
-│   ├── hal_tone.c                  # Tone (Timer2)
-│   ├── hal_random.c                # LCG random
-│   ├── hal_spi.c                   # SPI master (MSSP)
-│   └── hal_i2c.c                   # I2C master (MSSP)
+│       ├── hal_random.h            # Random (static inline)
+│       ├── hal_spi.h               # SPI master (static inline)
+│       └── hal_i2c.h               # I2C master (static inline)
 └── config/                         # #pragma config par MCU
     ├── pic16f876.h
     ├── pic16f877.h
@@ -292,14 +282,12 @@ HAL_Arduino/
     └── pic18f4685.h
 ```
 
-## Plateforme pic8bit — Problème connu
+## Librairie header-only
 
-La plateforme non-officielle **pic8bit** pour PlatformIO utilise un builder (`pic-xc8.py`) qui **ne gère pas** automatiquement `lib_deps`. En particulier :
+Cette bibliothèque est **header-only** (aucun fichier `.c`). Il suffit d'ajouter le chemin d'inclusion `-I` dans `build_flags` — pas de lien symbolique, pas de manipulation `lib/`.
 
-1. Les chemins `-I` des librairies installées ne sont pas ajoutés
-2. Les fichiers source des librairies ne sont pas compilés automatiquement
-
-Voir le fichier [`instruction utilisation de pic8bit non-officielle pour PlatformIO.md`](./instruction%20utilisation%20de%20pic8bit%20non-officielle%20pour%20PlatformIO.md) pour les détails (inclut aussi l'installation de XC8 sous Linux et Windows).
+> **Note plateforme pic8bit** : le builder `pic-xc8.py` ne gère pas `lib_deps` automatiquement.  
+> Voir le fichier [`instruction utilisation de pic8bit non-officielle pour PlatformIO.md`](./instruction%20utilisation%20de%20pic8bit%20non-officielle%20pour%20PlatformIO.md) pour les détails (inclut l'installation de XC8).
 
 ## Guide de démarrage rapide
 
@@ -312,7 +300,7 @@ board = pic16f887
 framework = pic-xc8
 build_flags =
     -Iinclude
-    -Ilib/HAL_Arduino_PIC8/include
+    -I.pio/libdeps/pic16f887/HAL_Arduino_PIC8/include
 lib_deps =
     https://github.com/Fo170/HAL_Arduino_PIC8.git
 ```
@@ -337,7 +325,11 @@ Ou utilisez un fichier depuis `config/` correspondant à votre MCU.
 
 ### 3. Créer `src/main.c`
 
+Placez les définitions d'implémentation dans UN SEUL fichier `.c` :
+
 ```c
+#define HAL_CORE_IMPLEMENTATION   // ISR + variables globales
+#define HAL_MAIN_IMPLEMENTATION   // main() + init()
 #include <xc.h>
 #include "config.h"
 #include <Arduino.h>
@@ -356,14 +348,9 @@ void loop(void) {
 }
 ```
 
-### 4. Créer le lien symbolique
+Les autres fichiers `.c` du projet n'ont besoin que de `#include <Arduino.h>` (sans les macros).
 
-```bash
-mkdir -p lib
-ln -s ../.pio/libdeps/pic16f887/HAL_Arduino_PIC8 lib/HAL_Arduino_PIC8
-```
-
-### 5. Compiler
+### 4. Compiler
 
 ```bash
 pio run -e pic16f887

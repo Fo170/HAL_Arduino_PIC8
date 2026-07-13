@@ -79,22 +79,18 @@ Le builder `pic-xc8.py` de cette plateforme **ne gère pas** automatiquement les
 
 2. **Les fichiers source des librairies** ne sont pas compilés automatiquement.
 
-## Solution pour utiliser HAL_Arduino_PIC8 (ou toute librairie externe)
+## Solution pour utiliser HAL_Arduino_PIC8 (header-only)
+
+**HAL_Arduino_PIC8 est désormais header-only** : pas de fichiers `.c` à compiler.  
+Le projet utilisateur active les définitions uniques (ISR, main) via des macros dans un seul `.c`.
 
 ### Prérequis
-- La librairie doit être déclarée dans `lib_deps` dans `platformio.ini`
+- Déclarer la librairie dans `lib_deps` du `platformio.ini`
 - Exécuter `pio run` une première fois pour télécharger la librairie dans `.pio/libdeps/<env>/`
 
 ### Étapes
 
-1. **Crée un lien symbolique** de la librairie dans `lib/` du projet :
-   ```bash
-   mkdir -p lib
-   ln -s ../.pio/libdeps/pic18f4550/HAL_Arduino_PIC8 lib/HAL_Arduino_PIC8
-   ```
-   Le builder scanne `lib/*/src/*.c` pour les sources additionnelles.
-
-2. **Ajoute les chemins d'inclusion** dans `build_flags` de `platformio.ini` :
+1. **Ajoute les chemins d'inclusion** dans `build_flags` de `platformio.ini` :
    ```ini
    build_flags = 
        -mdfp=/opt/microchip/mplabx/v6.00/packs/Microchip/PIC18Fxxxx_DFP/1.3.36/xc8
@@ -102,10 +98,22 @@ Le builder `pic-xc8.py` de cette plateforme **ne gère pas** automatiquement les
        -I.pio/libdeps/pic18f4550/HAL_Arduino_PIC8/include
    ```
 
+2. **Dans le fichier principal `.c`**, active les implémentations uniques :
+   ```c
+   #define HAL_CORE_IMPLEMENTATION
+   #define HAL_MAIN_IMPLEMENTATION
+   #include <Arduino.h>
+   
+   void setup(void) { ... }
+   void loop(void)  { ... }
+   ```
+
+   Les autres fichiers `.c` du projet n'ont besoin que de `#include <Arduino.h>`.
+
 ### Particularités de HAL_Arduino_PIC8
 
-- Fournit son propre `main()` dans `src/hal_main.c` qui appelle `init()` → `setup()` → `loop()`
-- Le projet utilisateur n'a besoin que de définir `setup()` et `loop()` (pas de `main()`)
+- Fournit `main()` et `init()` via `#define HAL_MAIN_IMPLEMENTATION`
+- L'ISR unique et les variables globales sont activées par `#define HAL_CORE_IMPLEMENTATION`
 - Les fichiers de configuration MCU sont dans `config/` (ex: `config/pic18f4550.h`)
 - Le projet doit avoir son propre `include/config.h` avec les `#pragma config` pour le MCU cible
 
@@ -130,3 +138,4 @@ Points importants :
 - Les flags sont passés via `build_flags` dans `platformio.ini`
 - Pas de support automatique des `-I` paths pour les librairies
 - Pas de support automatique du `lib_extra_dirs` ou `lib_search_paths` standard de PlatformIO
+- **HAL_Arduino_PIC8 étant header-only** (pas de `.c`), plus besoin de lien symbolique `lib/` — seul le chemin `-I` suffit
