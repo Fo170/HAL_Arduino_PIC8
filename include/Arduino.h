@@ -3,7 +3,7 @@
 
 
 // Version de la librairie (source UNIQUE — agrégée par liste_lib.h)
-#define __HAL_ARDUINO_PIC8_H_VERSION__ "1.0.4"
+#define __HAL_ARDUINO_PIC8_H_VERSION__ "1.0.5"
 #include <xc.h>
 #include <stdint.h>
 #include <stddef.h>
