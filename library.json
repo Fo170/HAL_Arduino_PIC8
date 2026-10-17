@@ -13,5 +13,12 @@
     "type": "git",
     "url": "https://github.com/Fo170/HAL_Arduino_PIC8.git"
   },
-  "license": "GPL-3.0"
+  "license": "GPL-3.0-only",
+  "authors": [
+    {
+      "name": "Olivier FOURNET",
+      "email": "olivier.fournet@free.fr",
+      "url": "https://github.com/Fo170"
+    }
+  ]
 }
